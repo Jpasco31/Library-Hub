@@ -1,4 +1,5 @@
 <?php
+//check login connection
 function check_login($con)
 {
     if (isset($_SESSION['accountId'])){
