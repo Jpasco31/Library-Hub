@@ -18,6 +18,9 @@ Username:	Password:	Account Type:
 admin	    admin    	admin
 jasper      jasper      user 
 kristina    kristina    user
+john        john        user
+
+NOTE: admin account will allow access to managing the library system such as the fucntionality of adding and deleting books in the database
 
 6. Alternative
     -Sign up a new Account
