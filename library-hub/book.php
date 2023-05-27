@@ -5,14 +5,15 @@ include("functions.php");
 
 $user_data = check_login($con);
 
+$bookId = NULL;
+$bookTitle = NULL;
+
 if($user_data['accountId'] != 1){
     header("Location: index.php");
     exit;
 }
-// Add book
-$bookId = NULL;
-$bookTitle = NULL;
 
+// Add book
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['addButton'])) {
     // Retrieve form data
     $bookTitle = $_POST['bookTitle'];
@@ -28,15 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['addButton'])) {
     $query = "INSERT INTO books (bookTitle, author, publishDate, synopsis, photo) VALUES ('$bookTitle', '$author', '$publishDate', '$synopsis', '$photoName')";
 
     if ($photoError === UPLOAD_ERR_OK) {
-        $uploadDir = 'C:/xampp/htdocs/final/library-hub/images/book/';// Modify this path to match the absolute path to your htdocs directory
+        $uploadDir = '/Applications/XAMPP/xamppfiles/htdocs/final/library-hub/images/book/'; // Modify this path to match the absolute path to your htdocs directory
         $photoDestination = $uploadDir . $photoName;
         move_uploaded_file($photoTmpName, $photoDestination);
-        
 
         // Prepare and execute the SQL query
         if (mysqli_query($con, $query)) {
             // Book added successfully
-            echo "Book added successfully!";
+            echo 'Book added successfully';
         } else {
             // Error occurred
             echo "Error: " . mysqli_error($con);
@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['addButton'])) {
         echo "File upload error: " . $photoError;
     }
 }
+
 
 //search for book
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searchButton'])) {
@@ -58,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['searchButton'])) {
         $bookTitle = $row['bookTitle'];
     } else {
         // Book not found
+        $bookId = "Book not found";
         $bookTitle = "Book not found";
     }
 }
@@ -70,11 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deleteButton'])) {
     
     if (mysqli_query($con, $query)) {
         // Book deleted successfully
-        echo "Book deleted successfully!";
-    } else {
-        // Error occurred
-        echo "Error: " . mysqli_error($con);
-    }
+        echo 'Book deleted successfully';
+    } 
 }
 ?>
 
@@ -110,23 +109,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deleteButton'])) {
                     <form class="container p-3 bg-white rounded-3 pt-4 mt-1" method="post" enctype="multipart/form-data">
                         <div class="form-group mb-2">
                             <label for="bookTitle">Book Title</label>
-                            <input type="text" class="form-control custom-input" id="bookTitle" name="bookTitle">
+                            <input type="text" class="form-control custom-input" id="bookTitle" name="bookTitle" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="author">Author</label>
-                            <input type="text" class="form-control custom-input" id="author" name="author">
+                            <input type="text" class="form-control custom-input" id="author" name="author" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="publishDate">Date Published</label>
-                            <input type="date" class="form-control custom-input" id="publishDate" name="publishDate">
+                            <input type="date" class="form-control custom-input" id="publishDate" name="publishDate" required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="synopsis">Synopsis</label>
-                            <textarea rows="4" class="form-control custom-input" id="synopsis" name="synopsis"></textarea>
+                            <textarea rows="4" class="form-control custom-input" id="synopsis" name="synopsis" required></textarea>
                         </div>
                         <div class="form-group mb-2">
                             <label for="photo">Upload Book cover</label>
-                            <input type="file" id="photo" name="photo">
+                            <input type="file" id="photo" name="photo" required>
                         </div>
                         <div class="d-grid gap-2">
                             <input class="btn btn-primary p-3 my-3 rounded-5" type="submit" value="Add" name="addButton">
@@ -134,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deleteButton'])) {
                     </form>
                 </div>
             </div>
+
             <!-- Delete -->
             <div class="col-md-6">
                 <div class="container custom-container mt-4 mb-5 border p-4">
@@ -148,11 +148,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deleteButton'])) {
                         </div>
                         <div class="form-group mb-2">
                             <label for="bookId">Book ID</label>
-                            <input type="text" class="form-control custom-input" id="bookId" name="bookIdSelect" value="<?php echo $bookId; ?>">
+                            <input type="text" class="form-control custom-input" id="bookId" name="bookIdSelect" value="<?php echo $bookId; ?>" readonly>
                         </div>
                         <div class="form-group mb-2">
                             <label for="bookTitle">Book Title</label>
-                            <input type="text" class="form-control custom-input" id="bookTitle" value="<?php echo $bookTitle; ?>">
+                            <input type="text" class="form-control custom-input" id="bookTitle" value="<?php echo $bookTitle; ?>" readonly>
                         </div>
                         <div class="d-grid gap-2">
                             <input class="btn btn-primary p-3 my-3 rounded-5" type="submit" value="Delete" name="deleteButton">
