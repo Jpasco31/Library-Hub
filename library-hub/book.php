@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['addButton'])) {
     $query = "INSERT INTO books (bookTitle, author, publishDate, synopsis, photo) VALUES ('$bookTitle', '$author', '$publishDate', '$synopsis', '$photoName')";
 
     if ($photoError === UPLOAD_ERR_OK) {
-        $uploadDir = '/Applications/XAMPP/xamppfiles/htdocs/final/library-hub/images/book/'; // Modify this path to match the absolute path to your htdocs directory
+        $uploadDir = 'C:/xampp/htdocs/final/library-hub/images/book/'; // Modify this path to match the absolute path to your htdocs directory 
         $photoDestination = $uploadDir . $photoName;
         move_uploaded_file($photoTmpName, $photoDestination);
 
