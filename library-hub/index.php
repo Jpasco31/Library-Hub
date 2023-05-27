@@ -18,7 +18,6 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <script src="main.js" defer></script>
     <title>Library Hub</title>
     
 </head>
@@ -53,12 +52,37 @@ session_start();
                         // If there is no result, display an error message
                         if (mysqli_num_rows($result) > 0) {
                             // output data of each row
-                            while($row = mysqli_fetch_assoc($result)) {
+                            while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<div class="booksize text-center">
-                                    <img src="images/book/'.$row['photo'].'"class="image-fluid booksize mx-4 my-2">
-                                    <p> Book ID:'.$row['bookId'].
-                                        '<br>'.$row['bookTitle'].'</p>
-                                    </div>';
+                                    <img src="images/book/' . $row['photo'] . '" class="image-fluid booksize mx-4 my-2">
+                                    <p> Book ID:' . $row['bookId'] . '<br>' . $row['bookTitle'] . '</p>
+                                    <button class="btn btn-primary" onclick="openSynopsisModal(' . $row['bookId'] . ')">Summary</button>
+                                </div>';
+            
+                                // Modal for displaying the synopsis
+                                echo '<div class="modal" id="modal-' . $row['bookId'] . '">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">' . $row['bookTitle'] . '</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <img src="images/book/' . $row['photo'] . '" alt="' . $row['bookTitle'] . '" class="img-fluid">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <p class="text-start"><strong>Author:</strong> ' . $row['author'] . '</p>
+                                                        <p class="text-start"><strong>Publish Date:</strong> ' . $row['publishDate'] . '</p>
+                                                        <p class="text-start"><strong>Summary</strong></p>
+                                                        <p class="text-start">' . $row['synopsis'] . '</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>';
                             }
                           } else {
                             echo "0 results";
@@ -73,6 +97,7 @@ session_start();
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
 
 </body>
 </html>
