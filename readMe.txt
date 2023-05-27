@@ -26,3 +26,5 @@ NOTE: admin account will allow access to managing the library system such as the
     -Sign up a new Account
 
 7. Enjoy!
+
+NOTE: In the book.php file, please modify line 32, "$uploadDir" variable. Modify the absolute path to your htdocs directory. This is to ensure the proper upload of photos of newly added books to the images/book/ folder,
